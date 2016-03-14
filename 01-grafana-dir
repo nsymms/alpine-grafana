@@ -1,0 +1,2 @@
+/var/lib/grafana true grafana 0755 0755
+/var/log/grafana true grafana 0755 0755
