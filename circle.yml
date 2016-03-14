@@ -17,8 +17,8 @@ dependencies:
 
   pre:
     - docker info
-    - ./build.sh
+    - ./build.sh master latest
 
 test:
   override:
-    - ./chechinflux.sh
+    - ./chechgrafana.sh
