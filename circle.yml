@@ -17,7 +17,7 @@ dependencies:
 
   pre:
     - docker info
-    - ./build.sh master latest
+    - ./build.sh
 
 test:
   override:
