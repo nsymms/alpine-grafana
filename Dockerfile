@@ -1,12 +1,12 @@
 FROM orangesys/alpine-s6:latest
 
-#ARG GRAFANA_VERSION
+ARG GRAFANA_VERSION
 
 RUN export GOPATH=/go \
     && PATH=$PATH:$GOPATH/bin \
     && apk add --update build-base nodejs go git mercurial \
     && mkdir -p /go/src/github.com/grafana && cd /go/src/github.com/grafana \
-    && git clone https://github.com/grafana/grafana.git \
+    && git clone https://github.com/grafana/grafana.git -b v${GRAFANA_VERSION}\
     && cd grafana \
     && go run build.go setup \
     && $GOPATH/bin/godep restore \
@@ -29,6 +29,8 @@ ADD ./defaults.ini /opt/grafana/conf/defaults.ini
 ADD ./grafana /etc/services.d/grafana
 ADD 01-grafana-dir /etc/fix-attrs.d/01-grafana-dir
 RUN addgroup -g 45555 grafana && adduser -u 45555 -G grafana -D grafana
+
+VOLUME ["/var/lib/grafana"]
 
 #WebUI
 EXPOSE 3000
