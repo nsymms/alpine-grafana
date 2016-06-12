@@ -8,4 +8,4 @@ if [ -z "${_grafana_tag}" ]; then
     _grafana_tag=${GRAFANA_VERSION}
 fi
 
-docker build --build-arg GRAFANA_VERSION=${_grafana_version} --tag "orangesys/alpine-s6-grafana:${_grafana_tag}"  --no-cache=true .
+docker build --build-arg GRAFANA_VERSION=${_grafana_version} --tag "nsymms/alpine-grafana:${_grafana_tag}"  --no-cache=true .
