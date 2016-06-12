@@ -1,3 +1,0 @@
-#!/usr/bin/execlineb -P
-
-gosu grafana /usr/bin/grafana-server -homepath /opt/grafana cfg:default.paths.data=/var/lib/grafana

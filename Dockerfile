@@ -25,14 +25,10 @@ RUN export GOPATH=/go \
     && apk del --purge build-base nodejs go git mercurial \
     && rm -rf /go /tmp/* /var/cache/apk/* /root/.n* 
 
-ADD ./defaults.ini /opt/grafana/conf/defaults.ini
-ADD ./grafana /etc/services.d/grafana
-ADD 01-grafana-dir /etc/fix-attrs.d/01-grafana-dir
-RUN addgroup -g 45555 grafana && adduser -u 45555 -G grafana -D grafana
+VOLUME ["/var/lib/grafana", "/var/lib/grafana/plugins", "/var/log/grafana", "/etc/grafana"]
 
-VOLUME ["/var/lib/grafana"]
-
-#WebUI
 EXPOSE 3000
 
-ENTRYPOINT ["/init"]
+COPY ./run.sh /run.sh
+
+ENTRYPOINT ["/run.sh"]
