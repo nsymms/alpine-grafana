@@ -1,4 +1,4 @@
-FROM orangesys/alpine-s6:latest
+FROM alpine:latest
 
 ARG GRAFANA_VERSION
 
