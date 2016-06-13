@@ -6,8 +6,6 @@ machine:
     - sudo chmod +x /usr/bin/jq
   python:
     version: 2.7.3
-  timezone:
-    Asia/Tokyo
   services:
     - docker
 

@@ -6,7 +6,7 @@ RUN export GOPATH=/go \
     && PATH=$PATH:$GOPATH/bin \
     && apk add --update build-base nodejs go git mercurial \
     && mkdir -p /go/src/github.com/grafana && cd /go/src/github.com/grafana \
-    && git clone https://github.com/grafana/grafana.git -b v${GRAFANA_VERSION}\
+    && git clone https://github.com/grafana/grafana.git -b v${GRAFANA_VERSION} \
     && cd grafana \
     && go run build.go setup \
     && $GOPATH/bin/godep restore \
@@ -16,14 +16,23 @@ RUN export GOPATH=/go \
     && cd /go/src/github.com/grafana/grafana && grunt \
     && npm uninstall -g grunt-cli \
     && npm cache clear \
-    && mkdir -p /opt/grafana/ && mkdir -p /var/lib/grafana && mkdir -p /opt/grafana/conf \
-    && cp -a /go/src/github.com/grafana/grafana/bin/grafana-server /usr/bin/grafana-server \
-    && cp -ra /go/src/github.com/grafana/grafana/public_gen /opt/grafana/public \
+    && mkdir -p /var/lib/grafana && mkdir -p /usr/share/grafana/public \
+    && cp -a /go/src/github.com/grafana/grafana/bin/grafana-server /usr/sbin/grafana-server \
+    && cp -a /go/src/github.com/grafana/grafana/bin/grafana-cli /usr/sbin/grafana-cli \
+    && cp -ra /go/src/github.com/grafana/grafana/public_gen/* /usr/share/grafana/public \
+    && mkdir /usr/share/grafana/conf && mkdir /usr/share/grafana/vendor \
+    && cp -a /go/src/github.com/grafana/grafana/conf/*.ini /usr/share/grafana/conf \
+    && mkdir /etc/grafana \
+    && cp -a /go/src/github.com/grafana/grafana/conf/*.toml /etc/grafana \
     && curl -o /usr/bin/gosu -sSL "https://github.com/tianon/gosu/releases/download/1.7/gosu-amd64" \
     && chmod +x /usr/bin/gosu \
     && go clean -i -r \
     && apk del --purge build-base nodejs go git mercurial \
     && rm -rf /go /tmp/* /var/cache/apk/* /root/.n* 
+
+COPY ./grafana.ini /etc/grafana/grafana.ini
+
+RUN addgroup -g 45555 grafana && adduser -u 45555 -G grafana -D grafana
 
 VOLUME ["/var/lib/grafana", "/var/lib/grafana/plugins", "/var/log/grafana", "/etc/grafana"]
 
