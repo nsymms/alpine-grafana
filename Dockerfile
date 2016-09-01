@@ -4,7 +4,7 @@ ARG GRAFANA_VERSION
 
 RUN export GOPATH=/go \
     && PATH=$PATH:$GOPATH/bin \
-    && apk add --update build-base nodejs go git mercurial \
+    && apk add --update build-base nodejs go git mercurial curl \
     && mkdir -p /go/src/github.com/grafana && cd /go/src/github.com/grafana \
     && git clone https://github.com/grafana/grafana.git -b v${GRAFANA_VERSION} \
     && cd grafana \
